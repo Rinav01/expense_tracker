@@ -10,16 +10,23 @@ class MyAppView extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       title: "Expense Tracker",
       theme: ThemeData(
-        colorScheme: ColorScheme.light(
-          surface: Colors.grey.shade100,
-          onSurface: Colors.black, 
-          primary: const Color(0xFF00B2E7),
-          secondary: const Color(0xFFE064F7),
-          tertiary: const Color(0xFFFF8D6C),
-          outline: Colors.grey,
-        )
-      ),
+          colorScheme: ColorScheme.dark(
+        surface: Colors.black, //interchange surface and onSurface
+        onSurface: Colors.grey.shade100,
+        primary: const Color(
+            0xFFFFA500), // original color codes in order 0xFF00B2E7,0xFFE064F7,0xFFFF8D6C
+        secondary: const Color(0xFFFF6347),
+        tertiary: const Color(0xFFFF4500),
+        outline: Colors.grey.shade200,
+      )),
       home: const HomeScreen(),
     );
   }
 }
+
+
+// another combination for gradient colors: [
+      //   Color(0xFF87CEFA),   Light Sky Blue
+      //   Color(0xFFAFEEEE),   Pale Turquoise
+      //   Color(0xFFFFB6C1),   Light Pink
+      // ]

@@ -22,7 +22,7 @@ class StatScreen extends StatelessWidget {
                 width: MediaQuery.of(context).size.width,
                 height: MediaQuery.of(context).size.width,
                 decoration: BoxDecoration(
-                    color: Colors.white,
+                    color: Colors.black,
                     borderRadius: BorderRadius.circular(12)),
                 child: const Padding(
                   padding: EdgeInsets.fromLTRB(12, 20, 12, 12),

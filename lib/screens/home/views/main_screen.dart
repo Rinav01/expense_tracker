@@ -27,12 +27,12 @@ class MainScreen extends StatelessWidget {
                           width: 50,
                           decoration: BoxDecoration(
                             shape: BoxShape.circle,
-                            color: Colors.yellow[700],
+                            color: Colors.white54, //10 12 24 30 38
                           ),
                         ),
                         Icon(
                           CupertinoIcons.person_fill,
-                          color: Colors.yellow[900],
+                          color: Colors.white,
                         )
                       ],
                     ),
@@ -67,6 +67,7 @@ class MainScreen extends StatelessWidget {
               height: 20.0,
             ),
             Container(
+              //card
               width: MediaQuery.of(context).size.width,
               height: MediaQuery.of(context).size.width / 2,
               decoration: BoxDecoration(
@@ -81,8 +82,8 @@ class MainScreen extends StatelessWidget {
                   borderRadius: BorderRadius.circular(25),
                   boxShadow: [
                     BoxShadow(
-                        blurRadius: 4,
-                        color: Colors.grey.shade400,
+                        blurRadius: 3,
+                        color: Colors.grey.shade800,
                         offset: const Offset(5, 5))
                   ]),
               child: Column(
@@ -171,7 +172,7 @@ class MainScreen extends StatelessWidget {
                                   child: Icon(
                                 CupertinoIcons.arrow_down,
                                 size: 12,
-                                color: Colors.redAccent,
+                                color: Color.fromARGB(255, 253, 31, 31),
                               )),
                             ),
                             const SizedBox(
@@ -244,7 +245,7 @@ class MainScreen extends StatelessWidget {
                       padding: const EdgeInsets.only(bottom: 16.0),
                       child: Container(
                         decoration: BoxDecoration(
-                          color: Colors.white,
+                          color: Colors.black,
                           borderRadius: BorderRadius.circular(12),
                         ),
                         child: Padding(
