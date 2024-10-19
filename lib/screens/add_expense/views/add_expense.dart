@@ -240,7 +240,14 @@ class _AddExpenseState extends State<AddExpense> {
                                                             pickerColor:
                                                                 Colors.blue,
                                                             onColorChanged:
-                                                                (value) {},
+                                                                (value) {
+                                                              setState(
+                                                                () {
+                                                                  categoryColor =
+                                                                      value;
+                                                                },
+                                                              );
+                                                            },
                                                           ),
                                                           SizedBox(
                                                             width:
