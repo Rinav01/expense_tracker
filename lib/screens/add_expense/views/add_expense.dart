@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:intl/intl.dart';
@@ -14,6 +15,15 @@ class _AddExpenseState extends State<AddExpense> {
   TextEditingController categoryController = TextEditingController();
   TextEditingController dateController = TextEditingController();
   DateTime selectedDate = DateTime.now();
+  List<String> myCategoryIcons = [
+    'entertainment',
+    'food',
+    'home',
+    'pet',
+    'shopping-bag',
+    'tech',
+    'travel',
+  ];
 
   @override
   void initState() {
@@ -82,69 +92,106 @@ class _AddExpenseState extends State<AddExpense> {
                           showDialog(
                               context: context,
                               builder: (ctx) {
-                                return AlertDialog(
-                                  backgroundColor:
-                                      const Color.fromARGB(56, 64, 59, 59)
-                                          .withOpacity(1),
-                                  content: Column(
-                                    mainAxisSize: MainAxisSize.min,
-                                    children: [
-                                      const Text(
-                                        "Create a new Category",
-                                        style: TextStyle(
-                                            fontSize: 20,
-                                            fontWeight: FontWeight.w500),
-                                      ),
-                                      const SizedBox(
-                                        height: 16,
-                                      ),
-                                      TextFormField(
-                                        textAlignVertical:
-                                            TextAlignVertical.center,
-                                        decoration: InputDecoration(
-                                            filled: true,
-                                            fillColor: Colors.white10,
-                                            hintText: "Name",
-                                            border: OutlineInputBorder(
-                                              borderRadius:
-                                                  BorderRadius.circular(12),
-                                            )),
-                                      ),
-                                      const SizedBox(
-                                        height: 16,
-                                      ),
-                                      TextFormField(
-                                        textAlignVertical:
-                                            TextAlignVertical.center,
-                                        // readOnly: true,
-                                        decoration: InputDecoration(
-                                            filled: true,
-                                            fillColor: Colors.white10,
-                                            hintText: "Icon",
-                                            border: OutlineInputBorder(
-                                              borderRadius:
-                                                  BorderRadius.circular(12),
-                                            )),
-                                      ),
-                                      const SizedBox(
-                                        height: 16,
-                                      ),
-                                      TextFormField(
-                                        textAlignVertical:
-                                            TextAlignVertical.center,
-                                        // readOnly: true,
-                                        decoration: InputDecoration(
+                                bool isExpanded = false;
+                                return StatefulBuilder(
+                                    builder: (context, setState) {
+                                  return AlertDialog(
+                                    title: const Text(
+                                      "Create a new Category",
+                                      style: TextStyle(
+                                          fontSize: 20,
+                                          fontWeight: FontWeight.w500),
+                                    ),
+                                    backgroundColor:
+                                        const Color.fromARGB(56, 64, 59, 59)
+                                            .withOpacity(1),
+                                    content: Column(
+                                      mainAxisSize: MainAxisSize.min,
+                                      children: [
+                                        TextFormField(
+                                          textAlignVertical:
+                                              TextAlignVertical.center,
+                                          decoration: InputDecoration(
+                                              isDense: true,
+                                              filled: true,
+                                              fillColor: Colors.white10,
+                                              hintText: "Name",
+                                              border: OutlineInputBorder(
+                                                borderRadius:
+                                                    BorderRadius.circular(12),
+                                              )),
+                                        ),
+                                        const SizedBox(
+                                          height: 16,
+                                        ),
+                                        TextFormField(
+                                          onTap: () {
+                                            setState(() {
+                                              isExpanded = !isExpanded;
+                                            });
+                                          },
+                                          textAlignVertical:
+                                              TextAlignVertical.center,
+                                          readOnly: true,
+                                          decoration: InputDecoration(
+                                              isDense: true,
+                                              filled: true,
+                                              fillColor: Colors.white10,
+                                              suffixIcon: const Icon(
+                                                CupertinoIcons.chevron_down,
+                                                size: 12,
+                                              ),
+                                              hintText: "Icon",
+                                              border: OutlineInputBorder(
+                                                borderRadius: isExpanded
+                                                    ? BorderRadius.vertical(
+                                                        top:
+                                                            Radius.circular(12))
+                                                    : BorderRadius.circular(12),
+                                              )),
+                                        ),
+                                        isExpanded
+                                            ? Container(
+                                                width: double.infinity,
+                                                height: 200,
+                                                decoration: const BoxDecoration(
+                                                    color: Colors.white10,
+                                                    borderRadius:
+                                                        BorderRadius.vertical(
+                                                            bottom:
+                                                                Radius.circular(
+                                                                    12))),
+                                                child: ListView.builder(
+                                                    itemCount:
+                                                        myCategoryIcons.length,
+                                                    itemBuilder:
+                                                        (context, int i) {
+                                                          
+                                                        }),
+                                              )
+                                            : Container(),
+                                        const SizedBox(
+                                          height: 16,
+                                        ),
+                                        TextFormField(
+                                          textAlignVertical:
+                                              TextAlignVertical.center,
+                                          // readOnly: true,
+                                          decoration: InputDecoration(
+                                            isDense: true,
                                             filled: true,
                                             fillColor: Colors.white10,
                                             hintText: "Color",
                                             border: OutlineInputBorder(
                                               borderRadius:
                                                   BorderRadius.circular(12),
-                                            )),
-                                      ),
-                                    ],
-                                  ),
-                                );
+                                            ),
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  );
+                                });
                               });
                         },
                         icon: const Icon(
