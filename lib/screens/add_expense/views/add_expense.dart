@@ -51,6 +51,7 @@ class _AddExpenseState extends State<AddExpense> {
               SizedBox(
                 width: MediaQuery.of(context).size.width * 0.7,
                 child: TextFormField(
+                  keyboardType: TextInputType.number,
                   controller: expenseController,
                   decoration: InputDecoration(
                       filled: true,
@@ -71,7 +72,7 @@ class _AddExpenseState extends State<AddExpense> {
               TextFormField(
                 readOnly: true,
                 onTap: () {
-                  getCategoryCreation(context);
+
                 },
                 controller: categoryController,
                 decoration: InputDecoration(
@@ -84,7 +85,7 @@ class _AddExpenseState extends State<AddExpense> {
                     ),
                     suffixIcon: IconButton(
                         onPressed: () {
-
+                          getCategoryCreation(context);
                         },
                         icon: const Icon(
                           FontAwesomeIcons.plus,
