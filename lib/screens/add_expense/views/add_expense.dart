@@ -1,5 +1,7 @@
+import 'package:expense_tracker1/screens/add_expense/blocs/get_categories_bloc/get_categories_bloc.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:intl/intl.dart';
 import 'category_creation.dart';
@@ -16,7 +18,6 @@ class _AddExpenseState extends State<AddExpense> {
   TextEditingController categoryController = TextEditingController();
   TextEditingController dateController = TextEditingController();
   DateTime selectedDate = DateTime.now();
-
 
   @override
   void initState() {
@@ -71,9 +72,7 @@ class _AddExpenseState extends State<AddExpense> {
               ),
               TextFormField(
                 readOnly: true,
-                onTap: () {
-
-                },
+                onTap: () {},
                 controller: categoryController,
                 decoration: InputDecoration(
                     filled: true,
@@ -93,10 +92,49 @@ class _AddExpenseState extends State<AddExpense> {
                           size: 16,
                         )),
                     hintText: "Category",
-                    border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(12),
-                    )),
+                    border: const OutlineInputBorder(
+                        borderRadius:
+                            BorderRadius.vertical(top: Radius.circular(12)),
+                        borderSide: BorderSide.none)),
               ),
+              Container(
+                  height: 200,
+                  width: MediaQuery.of(context).size.width,
+                  // color: Colors.red,
+                  decoration: const BoxDecoration(
+                    color: Colors.white10,
+                    borderRadius:
+                        BorderRadius.vertical(bottom: Radius.circular(12)),
+                  ),
+                  child: Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: BlocBuilder<GetCategoriesBloc, GetCategoriesState>(
+                      builder: (context, state) {
+                        if (state is GetCategoriesSuccess) {
+                          return ListView.builder(
+                            itemCount: state.categories.length,
+                            itemBuilder: (context, int i) {
+                              return Card(
+                                  child: ListTile(
+                                leading: Image.asset(
+                                  'assets/images/${state.categories[i].icon}.png',
+                                  scale: 2,
+                                ),
+                                title: Text(state.categories[i].name),
+                                tileColor: Color(state.categories[i].color),
+                                shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(8)),
+                              ));
+                            },
+                          );
+                        } else {
+                          return Center(
+                            child: CircularProgressIndicator(),
+                          );
+                        }
+                      },
+                    ),
+                  )),
               const SizedBox(
                 height: 16,
               ),

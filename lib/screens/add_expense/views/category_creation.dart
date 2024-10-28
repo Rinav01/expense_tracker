@@ -133,7 +133,7 @@ getCategoryCreation(BuildContext context) {
                                                   image: DecorationImage(
                                                       image: AssetImage(
                                                           'assets/images/${myCategoryIcons[i]}.png'),
-                                                      fit: BoxFit.contain)),
+                                                      scale: 2)),
                                             ),
                                           );
                                         }),
@@ -221,11 +221,11 @@ getCategoryCreation(BuildContext context) {
                                       category.name =
                                           categoryNameController.text;
                                       category.icon = iconSelected;
-                                      category.color = categoryColor.toString();
+                                      category.color = categoryColor.value;
                                       context
                                           .read<CreateCategoryBloc>()
                                           .add(CreateCategory(category));
-                                      // Navigator.pop(context);
+                                       // Navigator.pop(context);
                                     },
                                     style: TextButton.styleFrom(
                                         backgroundColor: Colors.white10,
