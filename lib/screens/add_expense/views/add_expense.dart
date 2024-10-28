@@ -1,8 +1,12 @@
+import 'package:expense_repository/expense_repository.dart';
+import 'package:expense_tracker1/screens/add_expense/blocs/create_category_bloc/create_category_bloc.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_colorpicker/flutter_colorpicker.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:intl/intl.dart';
+import 'package:uuid/uuid.dart';
 
 class AddExpense extends StatefulWidget {
   const AddExpense({super.key});
@@ -96,6 +100,9 @@ class _AddExpenseState extends State<AddExpense> {
                                 bool isExpanded = false;
                                 String iconSelected = '';
                                 Color categoryColor = Colors.white10;
+                                TextEditingController categoryNameController = TextEditingController();
+                                TextEditingController categoryIconController = TextEditingController();
+                                TextEditingController categoryColorController = TextEditingController();
                                 return StatefulBuilder(
                                     builder: (context, setState) {
                                       return AlertDialog(
@@ -115,6 +122,7 @@ class _AddExpenseState extends State<AddExpense> {
                                               mainAxisSize: MainAxisSize.min,
                                               children: [
                                                 TextFormField(
+                                                  controller: categoryNameController,
                                                   textAlignVertical:
                                                   TextAlignVertical.center,
                                                   decoration: InputDecoration(
@@ -131,6 +139,7 @@ class _AddExpenseState extends State<AddExpense> {
                                                   height: 16,
                                                 ),
                                                 TextFormField(
+                                                  controller: categoryIconController,
                                                   onTap: () {
                                                     setState(() {
                                                       isExpanded = !isExpanded;
@@ -228,6 +237,7 @@ class _AddExpenseState extends State<AddExpense> {
                                                   height: 16,
                                                 ),
                                                 TextFormField(
+                                                  controller: categoryColorController,
                                                   onTap: () {
                                                     showDialog(
                                                         context: context,
@@ -305,8 +315,14 @@ class _AddExpenseState extends State<AddExpense> {
                                                   height: kToolbarHeight,
                                                   child: TextButton(
                                                     onPressed: () {
-                                                      // create category object and pop
-                                                      Navigator.pop(context);
+                                                      // create category object and POP
+                                                      Category category = Category.empty;
+                                                      category.categoryId = const Uuid().v1();
+                                                      category.name = categoryNameController.text;
+                                                      category.icon = iconSelected;
+                                                      category.color = categoryColor.toString();
+                                                      context.read<CreateCategoryBloc>().add(CreateCategory(category));
+                                                      // Navigator.pop(context);
                                                     },
                                                     style: TextButton.styleFrom(
                                                         backgroundColor:
@@ -384,17 +400,17 @@ class _AddExpenseState extends State<AddExpense> {
                 height: kToolbarHeight,
                 child: TextButton(
                   onPressed: () {},
+                  style: TextButton.styleFrom(
+                      backgroundColor: Colors.white10,
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(12),
+                      )),
                   child: const Text(
                     "Save",
                     style: TextStyle(
                       fontSize: 22,
                     ),
                   ),
-                  style: TextButton.styleFrom(
-                      backgroundColor: Colors.white10,
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(12),
-                      )),
                 ),
               )
             ],
