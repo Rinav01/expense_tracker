@@ -1,8 +1,11 @@
+import 'package:expense_repository/expense_repository.dart';
 import 'package:expense_tracker1/authentication/signup_page.dart';
 import 'package:expense_tracker1/authentication/ui_helper.dart';
+import 'package:expense_tracker1/screens/home/blocs/get_expenses_bloc/get_expenses_bloc.dart';
 import 'package:expense_tracker1/screens/home/views/home_screen.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'forgot_password.dart';
 
 class Loginpage extends StatefulWidget {
@@ -24,7 +27,10 @@ class _LoginpageState extends State<Loginpage> {
     try {
       await FirebaseAuth.instance.signInWithEmailAndPassword(email: email, password: password);
       Navigator.pushReplacement(
-          context, MaterialPageRoute(builder: (context) => const HomeScreen()));
+          context, MaterialPageRoute(builder: (context) =>   BlocProvider(
+  create: (context) => GetExpensesBloc(FirebaseExpenseRepo())..add(GetExpenses()),
+  child: HomeScreen(),
+)));
     } on FirebaseAuthException catch (e) {
       UiHelper.customAlertDialog(context, e.message ?? "An unexpected error occurred.");
     }

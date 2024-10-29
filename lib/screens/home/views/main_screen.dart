@@ -1,15 +1,17 @@
 import 'dart:math';
+import 'package:expense_repository/expense_repository.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import '../../../data/data.dart';
+import 'package:intl/intl.dart';
 class MainScreen extends StatelessWidget {
-  const MainScreen({super.key});
+  final List<Expense> expenses;
+  const MainScreen(this.expenses, {super.key});
 
   @override
   Widget build(BuildContext context) {
     return SafeArea(
       child: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 25.0, vertical: 10.0),
+        padding: const EdgeInsets.symmetric(horizontal: 25.0, vertical: 10),
         child: Column(
           children: [
             Row(
@@ -21,51 +23,48 @@ class MainScreen extends StatelessWidget {
                       alignment: Alignment.center,
                       children: [
                         Container(
-                          height: 50,
                           width: 50,
-                          decoration: const BoxDecoration(
-                            shape: BoxShape.circle,
-                            color: Colors.white54, //10 12 24 30 38
+                          height: 50,
+                          decoration: BoxDecoration(
+                              shape: BoxShape.circle,
+                              color: Colors.yellow[700]
                           ),
                         ),
-                        const Icon(
+                        Icon(
                           CupertinoIcons.person_fill,
-                          color: Colors.white,
+                          color: Colors.yellow[800],
                         )
                       ],
                     ),
-                    const SizedBox(
-                      width: 8,
-                    ),
+                    const SizedBox(width: 8,),
                     Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(
-                            "Welcome!",
-                            style: TextStyle(
-                                fontSize: 12,
-                                fontWeight: FontWeight.w600,
-                                color: Theme.of(context).colorScheme.outline),
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          "Welcome!",
+                          style: TextStyle(
+                              fontSize: 12,
+                              fontWeight: FontWeight.w600,
+                              color: Theme.of(context).colorScheme.outline
                           ),
-                          Text(
-                            "Rinav Vaish",
-                            style: TextStyle(
-                                fontSize: 18,
-                                fontWeight: FontWeight.bold,
-                                color: Theme.of(context).colorScheme.onSurface),
+                        ),
+                        Text(
+                          "John Doe",
+                          style: TextStyle(
+                              fontSize: 18,
+                              fontWeight: FontWeight.bold,
+                              color: Theme.of(context).colorScheme.onSurface
                           ),
-                        ]),
+                        )
+                      ],
+                    ),
                   ],
                 ),
-                IconButton(
-                    onPressed: () {}, icon: const Icon(CupertinoIcons.settings))
+                IconButton(onPressed: () {}, icon: const Icon(CupertinoIcons.settings))
               ],
             ),
-            const SizedBox(
-              height: 20.0,
-            ),
+            const SizedBox(height: 20,),
             Container(
-              //card
               width: MediaQuery.of(context).size.width,
               height: MediaQuery.of(context).size.width / 2,
               decoration: BoxDecoration(
@@ -80,38 +79,34 @@ class MainScreen extends StatelessWidget {
                   borderRadius: BorderRadius.circular(25),
                   boxShadow: [
                     BoxShadow(
-                        blurRadius: 3,
-                        color: Colors.grey.shade800,
-                        offset: const Offset(5, 5))
-                  ]),
+                        blurRadius: 4,
+                        color: Colors.grey.shade300,
+                        offset: const Offset(5, 5)
+                    )
+                  ]
+              ),
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   const Text(
-                    "Total Balance",
+                    'Total Balance',
                     style: TextStyle(
-                      fontSize: 16,
-                      color: Colors.white,
-                      fontWeight: FontWeight.w600,
+                        fontSize: 16,
+                        color: Colors.white,
+                        fontWeight: FontWeight.w600
                     ),
                   ),
-                  const SizedBox(
-                    height: 12,
-                  ),
+                  const SizedBox(height: 12),
                   const Text(
-                    "Rs 10000.00",
+                    '\$ 4800.00',
                     style: TextStyle(
-                      fontSize: 40,
-                      color: Colors.white,
-                      fontWeight: FontWeight.bold,
+                        fontSize: 40,
+                        color: Colors.white,
+                        fontWeight: FontWeight.bold
                     ),
-                  ),
-                  const SizedBox(
-                    height: 12,
                   ),
                   Padding(
-                    padding: const EdgeInsets.symmetric(
-                        vertical: 12, horizontal: 20),
+                    padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 20),
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
@@ -121,36 +116,35 @@ class MainScreen extends StatelessWidget {
                               width: 25,
                               height: 25,
                               decoration: const BoxDecoration(
-                                color: Colors.white30,
-                                shape: BoxShape.circle,
+                                  color: Colors.white30,
+                                  shape: BoxShape.circle
                               ),
                               child: const Center(
                                   child: Icon(
-                                    CupertinoIcons.arrow_up,
+                                    CupertinoIcons.arrow_down,
                                     size: 12,
                                     color: Colors.greenAccent,
-                                  )),
+                                  )
+                              ),
                             ),
-                            const SizedBox(
-                              width: 8,
-                            ),
+                            const SizedBox(width: 8),
                             const Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 Text(
-                                  "Income",
+                                  'Income',
                                   style: TextStyle(
-                                    fontSize: 14,
-                                    color: Colors.white,
-                                    fontWeight: FontWeight.w400,
+                                      fontSize: 14,
+                                      color: Colors.white,
+                                      fontWeight: FontWeight.w400
                                   ),
                                 ),
                                 Text(
-                                  "Rs 5000.00",
+                                  '€ 2500.00',
                                   style: TextStyle(
-                                    fontSize: 14,
-                                    color: Colors.white,
-                                    fontWeight: FontWeight.w600,
+                                      fontSize: 14,
+                                      color: Colors.white,
+                                      fontWeight: FontWeight.w600
                                   ),
                                 ),
                               ],
@@ -163,36 +157,35 @@ class MainScreen extends StatelessWidget {
                               width: 25,
                               height: 25,
                               decoration: const BoxDecoration(
-                                color: Colors.white30,
-                                shape: BoxShape.circle,
+                                  color: Colors.white30,
+                                  shape: BoxShape.circle
                               ),
                               child: const Center(
                                   child: Icon(
                                     CupertinoIcons.arrow_down,
                                     size: 12,
-                                    color: Color.fromARGB(255, 253, 31, 31),
-                                  )),
+                                    color: Colors.red,
+                                  )
+                              ),
                             ),
-                            const SizedBox(
-                              width: 8,
-                            ),
+                            const SizedBox(width: 8),
                             const Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 Text(
-                                  "Expenses",
+                                  'Expenses',
                                   style: TextStyle(
-                                    fontSize: 14,
-                                    color: Colors.white,
-                                    fontWeight: FontWeight.w400,
+                                      fontSize: 14,
+                                      color: Colors.white,
+                                      fontWeight: FontWeight.w400
                                   ),
                                 ),
                                 Text(
-                                  "Rs 200.00",
+                                  '€ 800.00',
                                   style: TextStyle(
-                                    fontSize: 14,
-                                    color: Colors.white,
-                                    fontWeight: FontWeight.w600,
+                                      fontSize: 14,
+                                      color: Colors.white,
+                                      fontWeight: FontWeight.w600
                                   ),
                                 ),
                               ],
@@ -205,46 +198,44 @@ class MainScreen extends StatelessWidget {
                 ],
               ),
             ),
-            const SizedBox(
-              height: 40,
-            ),
+            const SizedBox(height: 40),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Text(
-                  "Transactions",
+                  'Transactions',
                   style: TextStyle(
-                    fontSize: 16,
-                    fontWeight: FontWeight.bold,
-                    color: Theme.of(context).colorScheme.onSurface,
+                      fontSize: 16,
+                      color: Theme.of(context).colorScheme.onSurface,
+                      fontWeight: FontWeight.bold
                   ),
                 ),
                 GestureDetector(
-                  onTap: () {},
+                  onTap: () {
+
+                  },
                   child: Text(
-                    "View All",
+                    'View All',
                     style: TextStyle(
-                      fontSize: 14,
-                      fontWeight: FontWeight.w400,
-                      color: Theme.of(context).colorScheme.outline,
+                        fontSize: 14,
+                        color: Theme.of(context).colorScheme.outline,
+                        fontWeight: FontWeight.w400
                     ),
                   ),
                 )
               ],
             ),
-            const SizedBox(
-              height: 20,
-            ),
+            const SizedBox(height: 20),
             Expanded(
               child: ListView.builder(
-                  itemCount: transactionsData.length,
+                  itemCount: expenses.length,
                   itemBuilder: (context, int i) {
                     return Padding(
                       padding: const EdgeInsets.only(bottom: 16.0),
                       child: Container(
                         decoration: BoxDecoration(
-                          color: Colors.black,
-                          borderRadius: BorderRadius.circular(12),
+                            color: Colors.white,
+                            borderRadius: BorderRadius.circular(12)
                         ),
                         child: Padding(
                           padding: const EdgeInsets.all(16.0),
@@ -260,26 +251,24 @@ class MainScreen extends StatelessWidget {
                                         width: 50,
                                         height: 50,
                                         decoration: BoxDecoration(
-                                          color: transactionsData[i]['color'],
-                                          shape: BoxShape.circle,
+                                            color: Color(expenses[i].category.color),
+                                            shape: BoxShape.circle
                                         ),
                                       ),
-                                      transactionsData[i]['icon']
-                                      // const Icon(Icons.food_bank,
-                                      //     color: Colors.white)
+                                      Image.asset(
+                                        'assets/${expenses[i].category.icon}.png',
+                                        scale: 2,
+                                        color: Colors.white,
+                                      )
                                     ],
                                   ),
-                                  const SizedBox(
-                                    width: 12,
-                                  ),
+                                  const SizedBox(width: 12),
                                   Text(
-                                    transactionsData[i]['name'],
+                                    expenses[i].category.name,
                                     style: TextStyle(
-                                      fontSize: 14,
-                                      color: Theme.of(context)
-                                          .colorScheme
-                                          .onSurface,
-                                      fontWeight: FontWeight.w500,
+                                        fontSize: 14,
+                                        color: Theme.of(context).colorScheme.onSurface,
+                                        fontWeight: FontWeight.w500
                                     ),
                                   ),
                                 ],
@@ -288,22 +277,19 @@ class MainScreen extends StatelessWidget {
                                 crossAxisAlignment: CrossAxisAlignment.end,
                                 children: [
                                   Text(
-                                    transactionsData[i]['totalAmount'],
+                                    "\$${expenses[i].amount}.00",
                                     style: TextStyle(
-                                      fontSize: 14,
-                                      color: Theme.of(context)
-                                          .colorScheme
-                                          .onSurface,
-                                      fontWeight: FontWeight.w400,
+                                        fontSize: 14,
+                                        color: Theme.of(context).colorScheme.onSurface,
+                                        fontWeight: FontWeight.w400
                                     ),
                                   ),
                                   Text(
-                                    transactionsData[i]['date'],
+                                    DateFormat('dd/MM/yyyy').format(expenses[i].date),
                                     style: TextStyle(
-                                      fontSize: 14,
-                                      color:
-                                      Theme.of(context).colorScheme.outline,
-                                      fontWeight: FontWeight.w400,
+                                        fontSize: 14,
+                                        color: Theme.of(context).colorScheme.outline,
+                                        fontWeight: FontWeight.w400
                                     ),
                                   ),
                                 ],
@@ -313,7 +299,8 @@ class MainScreen extends StatelessWidget {
                         ),
                       ),
                     );
-                  }),
+                  }
+              ),
             )
           ],
         ),

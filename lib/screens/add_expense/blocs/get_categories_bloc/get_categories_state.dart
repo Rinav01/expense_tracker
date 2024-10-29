@@ -4,14 +4,23 @@ sealed class GetCategoriesState extends Equatable {
   const GetCategoriesState();
 
   @override
-  List<Object> get props =>[];
+  List<Object> get props => [];
 }
 
-final class GetCategoriesInitial extends GetCategoriesState{}
+final class GetCategoriesInitial extends GetCategoriesState {}
 
-final class GetCategoriesFailure extends GetCategoriesState{}
-final class GetCategoriesLoading extends GetCategoriesState{}
-final class GetCategoriesSuccess extends GetCategoriesState{
+final class GetCategoriesLoading extends GetCategoriesState {}
+
+final class GetCategoriesFailure extends GetCategoriesState {
+  final String error; // Include error message
+
+  const GetCategoriesFailure({required this.error}); // Constructor to pass the error message
+
+  @override
+  List<Object> get props => [error]; // Include error in props for equality comparison
+}
+
+final class GetCategoriesSuccess extends GetCategoriesState {
   final List<Category> categories;
 
   const GetCategoriesSuccess(this.categories);
@@ -19,4 +28,3 @@ final class GetCategoriesSuccess extends GetCategoriesState{
   @override
   List<Object> get props => [categories];
 }
-

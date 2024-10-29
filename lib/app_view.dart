@@ -1,5 +1,5 @@
 import 'package:expense_tracker1/authentication/login_page.dart';
-import 'package:expense_tracker1/screens/home/views/home_screen.dart';
+
 import 'package:flutter/material.dart';
 
 class MyAppView extends StatelessWidget {

@@ -2,12 +2,12 @@
   "project_info": {
     "project_number": "590615461920",
     "project_id": "expensetracker-5254f",
-    "storage_bucket": "fir-backend-577e2.appspot.com"
+    "storage_bucket": "expensetracker-5254f.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:902374976135:android:807620a271f836ee1fa622",
+        "mobilesdk_app_id": "1:590615461920:android:0472771ab99faa26f07c45",
         "android_client_info": {
           "package_name": "com.example.expense_tracker1"
         }

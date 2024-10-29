@@ -13,24 +13,23 @@ class CategoryEntity {
     required this.color,
   });
 
-  Map<String,Object?> toDocument(){
-    return{
+  Map<String, Object?> toDocument() {
+    return {
       'categoryId': categoryId,
       'name': name,
-      'totalExpense': totalExpenses,
+      'totalExpenses': totalExpenses,
       'icon': icon,
       'color': color,
     };
   }
 
-  static CategoryEntity fromDocument(Map<String,dynamic> doc){
-      return CategoryEntity(
-          categoryId: doc['categoryId'],
-          name: doc['name'],
-          totalExpenses: doc['totalExpenses'],
-          icon: doc['icon'],
-          color: doc['color'],
-      );
+  static CategoryEntity fromDocument(Map<String, dynamic> doc) {
+    return CategoryEntity(
+      categoryId: doc['categoryId'],
+      name: doc['name'],
+      totalExpenses: doc['totalExpenses'],
+      icon: doc['icon'],
+      color: doc['color'],
+    );
   }
-
 }

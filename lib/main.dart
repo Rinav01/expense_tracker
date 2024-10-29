@@ -14,4 +14,3 @@ void main() async {
   // Initialize Firebase
   runApp(const MyApp());
 }
-
