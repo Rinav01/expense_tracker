@@ -23,7 +23,7 @@ class CheckUser extends StatelessWidget {
         } else if (snapshot.hasData && snapshot.data == true) {
           return const HomeScreen();
         } else {
-          return const Loginpage();
+          return const LoginPage();
         }
       },
     );

@@ -1,45 +1,45 @@
-import '../entities/entities.dart';
-
 class Category {
   String categoryId;
   String name;
-  int totalExpenses;
+  int? totalExpenses;  // Nullable
   String icon;
-  int color;
+  int? color;  // Nullable
 
   Category({
     required this.categoryId,
     required this.name,
-    required this.totalExpenses,
+    this.totalExpenses,  // Nullable
     required this.icon,
-    required this.color,
+    this.color,  // Nullable
   });
 
   static final empty = Category(
-      categoryId: '',
-      name: '',
-      totalExpenses: 0,
-      icon: '',
-      color: 0
+    categoryId: '',
+    name: '',
+    totalExpenses: null,  // Nullable
+    icon: '',
+    color: null,  // Nullable
   );
 
-  CategoryEntity toEntity() {
-    return CategoryEntity(
-      categoryId: categoryId,
-      name: name,
-      totalExpenses: totalExpenses,
-      icon: icon,
-      color: color,
-    );
+  // Convert Category to a Map to store in SQLite
+  Map<String, Object?> toMap() {
+    return {
+      'categoryId': categoryId,
+      'name': name,
+      'totalExpenses': totalExpenses,  // Nullable value
+      'icon': icon,
+      'color': color,  // Nullable value
+    };
   }
 
-  static Category fromEntity(CategoryEntity entity) {
+  // Convert Map from SQLite back to a Category object
+  static Category fromMap(Map<String, dynamic> map) {
     return Category(
-      categoryId: entity.categoryId,
-      name: entity.name,
-      totalExpenses: entity.totalExpenses,
-      icon: entity.icon,
-      color: entity.color,
+      categoryId: map['categoryId'] ?? '',  // Default to empty string if null
+      name: map['name'] ?? '',              // Default to empty string if null
+      totalExpenses: map['totalExpenses'],  // Nullable
+      icon: map['icon'] ?? '',              // Default to empty string if null
+      color: map['color'],                  // Nullable
     );
   }
 }

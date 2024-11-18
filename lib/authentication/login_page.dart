@@ -1,21 +1,19 @@
 import 'package:expense_repository/expense_repository.dart';
 import 'package:expense_tracker1/authentication/signup_page.dart';
 import 'package:expense_tracker1/authentication/ui_helper.dart';
-import 'package:expense_tracker1/screens/home/blocs/get_expenses_bloc/get_expenses_bloc.dart';
 import 'package:expense_tracker1/screens/home/views/home_screen.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'forgot_password.dart';
 
-class Loginpage extends StatefulWidget {
-  const Loginpage({super.key});
+class LoginPage extends StatefulWidget {
+  const LoginPage({super.key});
 
   @override
-  State<Loginpage> createState() => _LoginpageState();
+  State<LoginPage> createState() => _LoginPageState();
 }
 
-class _LoginpageState extends State<Loginpage> {
+class _LoginPageState extends State<LoginPage> {
   final TextEditingController emailController = TextEditingController();
   final TextEditingController passwordController = TextEditingController();
 
@@ -27,10 +25,11 @@ class _LoginpageState extends State<Loginpage> {
     try {
       await FirebaseAuth.instance.signInWithEmailAndPassword(email: email, password: password);
       Navigator.pushReplacement(
-          context, MaterialPageRoute(builder: (context) =>   BlocProvider(
-  create: (context) => GetExpensesBloc(FirebaseExpenseRepo())..add(GetExpenses()),
-  child: HomeScreen(),
-)));
+        context,
+        MaterialPageRoute(
+          builder: (context) => HomeScreen(),  // Navigate directly to HomeScreen
+        ),
+      );
     } on FirebaseAuthException catch (e) {
       UiHelper.customAlertDialog(context, e.message ?? "An unexpected error occurred.");
     }
@@ -39,11 +38,11 @@ class _LoginpageState extends State<Loginpage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Theme.of(context).colorScheme.surface, // Set background color
+      backgroundColor: Theme.of(context).colorScheme.surface,
       appBar: AppBar(
         title: const Text("Login Page"),
         centerTitle: true,
-        backgroundColor: Theme.of(context).colorScheme.primary, // Use primary color for app bar
+        backgroundColor: Theme.of(context).colorScheme.primary,
       ),
       body: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 25),

@@ -13,7 +13,8 @@ class CategoryEntity {
     required this.color,
   });
 
-  Map<String, Object?> toDocument() {
+  // Convert CategoryEntity to a Map to store in SQLite
+  Map<String, Object?> toMap() {
     return {
       'categoryId': categoryId,
       'name': name,
@@ -23,13 +24,14 @@ class CategoryEntity {
     };
   }
 
-  static CategoryEntity fromDocument(Map<String, dynamic> doc) {
+  // Convert Map from SQLite back to a CategoryEntity object
+  static CategoryEntity fromMap(Map<String, dynamic> map) {
     return CategoryEntity(
-      categoryId: doc['categoryId'],
-      name: doc['name'],
-      totalExpenses: doc['totalExpenses'],
-      icon: doc['icon'],
-      color: doc['color'],
+      categoryId: map['categoryId'],
+      name: map['name'],
+      totalExpenses: map['totalExpenses'],
+      icon: map['icon'],
+      color: map['color'],
     );
   }
 }

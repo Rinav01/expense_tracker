@@ -43,10 +43,17 @@ android {
 }
 
 // Add dependencies
-dependencies{
-    implementation 'com.google.android.gms:play-services-base:21.2.0' // or latest version
+dependencies {
+    // Firebase dependencies
+    implementation platform('com.google.firebase:firebase-bom:33.5.1') // use the latest BOM version
+    implementation 'com.google.firebase:firebase-auth'
+    implementation 'com.google.firebase:firebase-firestore'
+    // Add other Firebase dependencies as needed
 
+    // Google Play services
+    implementation 'com.google.android.gms:play-services-auth:21.2.0' // Adjust version as needed
 }
+
 
 // Flutter configuration
 flutter {

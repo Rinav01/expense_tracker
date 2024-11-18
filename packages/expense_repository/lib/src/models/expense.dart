@@ -1,4 +1,4 @@
-import 'package:expense_repository/expense_repository.dart';
+import '../../expense_repository.dart';
 
 class Expense {
   String expenseId;
@@ -20,21 +20,23 @@ class Expense {
     amount: 0,
   );
 
-  ExpenseEntity toEntity() {
-    return ExpenseEntity(
-      expenseId: expenseId,
-      category: category,
-      date: date,
-      amount: amount,
-    );
+  // Convert Expense to a Map to store in SQLite
+  Map<String, Object?> toMap() {
+    return {
+      'expenseId': expenseId,
+      'categoryId': category.categoryId, // Store only categoryId to relate with the Category table
+      'date': date.toIso8601String(), // Convert DateTime to a string for SQLite storage
+      'amount': amount,
+    };
   }
 
-  static Expense fromEntity(ExpenseEntity entity) {
+  // Convert Map from SQLite back to an Expense object
+  static Expense fromMap(Map<String, dynamic> map, Category category) {
     return Expense(
-      expenseId: entity.expenseId,
-      category: entity.category,
-      date: entity.date,
-      amount: entity.amount,
+      expenseId: map['expenseId'],
+      category: category, // Use the Category object passed as an argument
+      date: DateTime.parse(map['date']), // Convert the string back to DateTime
+      amount: map['amount'],
     );
   }
 }

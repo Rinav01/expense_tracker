@@ -1,7 +1,5 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:expense_repository/src/entities/entities.dart';
-
-import '../models/models.dart';
+import 'package:expense_repository/src/models/models.dart';
 
 class ExpenseEntity {
   String expenseId;
@@ -16,21 +14,23 @@ class ExpenseEntity {
     required this.amount,
   });
 
-  Map<String, Object?> toDocument() {
+  // Convert ExpenseEntity to a Map to store in SQLite
+  Map<String, Object?> toMap() {
     return {
       'expenseId': expenseId,
-      'category': category.toEntity().toDocument(),
-      'date': date,
+      'categoryId': category.categoryId, // Only save categoryId as it refers to a Category
+      'date': date.toIso8601String(), // Store date as a string in ISO format
       'amount': amount,
     };
   }
 
-  static ExpenseEntity fromDocument(Map<String, dynamic> doc) {
+  // Convert Map from SQLite back to an ExpenseEntity object
+  static ExpenseEntity fromMap(Map<String, dynamic> map, Category category) {
     return ExpenseEntity(
-      expenseId: doc['expenseId'],
-      category: Category.fromEntity(CategoryEntity.fromDocument(doc['category'])),
-      date: (doc['date'] as Timestamp).toDate(),
-      amount: doc['amount'],
+      expenseId: map['expenseId'],
+      category: category, // Fetch the Category object separately using categoryId
+      date: DateTime.parse(map['date']), // Convert the string back to DateTime
+      amount: map['amount'],
     );
   }
 }

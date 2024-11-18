@@ -20,7 +20,7 @@ class MyAppView extends StatelessWidget {
           outline: Colors.grey.shade200, // Outline color
         ),
       ),
-      home: const  Loginpage(),
+      home: const  LoginPage(),
     );
   }
 }
