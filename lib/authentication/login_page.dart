@@ -1,7 +1,7 @@
-import 'package:expense_repository/expense_repository.dart';
 import 'package:expense_tracker1/authentication/signup_page.dart';
 import 'package:expense_tracker1/authentication/ui_helper.dart';
 import 'package:expense_tracker1/screens/home/views/home_screen.dart';
+// ignore: depend_on_referenced_packages
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'forgot_password.dart';

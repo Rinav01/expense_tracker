@@ -1,4 +1,3 @@
-import 'package:expense_repository/src/entities/entities.dart';
 import 'package:expense_repository/src/models/models.dart';
 
 class ExpenseEntity {
