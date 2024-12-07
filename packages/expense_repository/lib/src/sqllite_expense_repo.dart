@@ -62,7 +62,6 @@ class SQLiteExpenseRepository implements ExpenseRepository {
     }
   }
 
-  @override
   Future<List<Category>> getCategory() async {
     try {
       final List<Map<String, dynamic>> maps = await _db.query(categoryTable);

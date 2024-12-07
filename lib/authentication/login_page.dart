@@ -19,19 +19,25 @@ class _LoginPageState extends State<LoginPage> {
 
   Future<void> login(String email, String password) async {
     if (email.isEmpty || password.isEmpty) {
-      UiHelper.customAlertDialog(context, "Please enter your email and password.");
+      if (mounted) {
+        UiHelper.customAlertDialog(context, "Please enter your email and password.");
+      }
       return;
     }
     try {
       await FirebaseAuth.instance.signInWithEmailAndPassword(email: email, password: password);
-      Navigator.pushReplacement(
-        context,
-        MaterialPageRoute(
-          builder: (context) => HomeScreen(),  // Navigate directly to HomeScreen
-        ),
-      );
+      if (mounted) {
+        Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(
+            builder: (context) => HomeScreen(),  // Navigate directly to HomeScreen
+          ),
+        );
+      }
     } on FirebaseAuthException catch (e) {
-      UiHelper.customAlertDialog(context, e.message ?? "An unexpected error occurred.");
+      if (mounted) {
+        UiHelper.customAlertDialog(context, e.message ?? "An unexpected error occurred.");
+      }
     }
   }
 

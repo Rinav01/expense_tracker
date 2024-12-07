@@ -1,6 +1,6 @@
-
 import 'package:sqflite/sqflite.dart';
 import 'package:path/path.dart';
+import 'package:flutter/material.dart';
 import 'package:expense_repository/expense_repository.dart';
 
 class ExpenseDatabase {
@@ -22,18 +22,21 @@ class ExpenseDatabase {
   Future<Database> _initDB(String filePath) async {
     final dbPath = await getDatabasesPath();
     final path = join(dbPath, filePath);
-    return await openDatabase(path, version: 1, onCreate: _onCreate);
+
+    // Open the database and enable foreign keys
+    final db = await openDatabase(path, version: 1, onCreate: _onCreate);
+    await db.execute('PRAGMA foreign_keys = ON');
+    return db;
   }
 
-  // Method to initialize the database (newly added method)
+  // Initialize the database
   Future<void> initDatabase() async {
-    await database; // Calls the getter to initialize the database if not already initialized
+    await database;
   }
 
-  // Method to create tables (categories and expenses)
+  // Create tables for categories and expenses
   Future<void> _onCreate(Database db, int version) async {
-    // Create Categories table
-    await db.execute(''' 
+    await db.execute('''
       CREATE TABLE categories (
         categoryId TEXT PRIMARY KEY,
         name TEXT,
@@ -43,8 +46,7 @@ class ExpenseDatabase {
       );
     ''');
 
-    // Create Expenses table
-    await db.execute(''' 
+    await db.execute('''
       CREATE TABLE expenses (
         expenseId TEXT PRIMARY KEY,
         categoryId TEXT,
@@ -53,36 +55,6 @@ class ExpenseDatabase {
         FOREIGN KEY (categoryId) REFERENCES categories(categoryId)
       );
     ''');
-  }
-
-  // Insert sample data into the database for testing
-  Future<void> insertSampleData() async {
-    final db = await database;
-
-    // Check if data already exists to avoid duplicate inserts
-    if (await hasExpenses()) {
-      print("Sample data already exists.");
-      return;
-    }
-
-    // Insert a sample category
-    await db.insert('categories', {
-      'categoryId': 'cat1',
-      'name': 'Food',
-      'totalExpenses': 0,
-      'icon': 'assets/images/food.png',
-      'color': 0xFF0000FF, // Example color (blue)
-    });
-
-    // Insert a sample expense linked to the sample category
-    await db.insert('expenses', {
-      'expenseId': 'exp1',
-      'categoryId': 'cat1',
-      'date': DateTime.now().toIso8601String(),
-      'amount': 100, // Example amount
-    });
-
-    print("Sample data inserted successfully.");
   }
 
   // Insert an expense into the database
@@ -105,13 +77,12 @@ class ExpenseDatabase {
   Future<List<Expense>> getExpenses() async {
     final db = await instance.database;
 
-    // Fetch all expenses
     final List<Map<String, dynamic>> expenseMaps = await db.query('expenses');
+    print("Fetched expenses: $expenseMaps");
 
-    // Get all categories to fetch the related category details
     final List<Map<String, dynamic>> categoryMaps = await db.query('categories');
+    print("Fetched categories: $categoryMaps");
 
-    // Map categoryId to Category for quick lookup
     final Map<String, Category> categoryMap = {
       for (var category in categoryMaps)
         category['categoryId']: Category(
@@ -119,28 +90,27 @@ class ExpenseDatabase {
           name: category['name'],
           totalExpenses: category['totalExpenses'],
           icon: category['icon'],
-          color: category['color'],
-        )
+          color: Color(category['color']).value, // Convert integer back to Color
+        ),
     };
 
-    // Generate the expenses list by associating each expense with the correct category
     return List.generate(expenseMaps.length, (i) {
       final expenseMap = expenseMaps[i];
-      final category = categoryMap[expenseMap['categoryId']];
+      final category = categoryMap[expenseMap['categoryId']] ??
+          Category(
+            categoryId: 'unknown',
+            name: 'Unknown',
+            totalExpenses: 0,
+            icon: '',
+            color: Colors.black.value, // Default color
+          );
 
       return Expense(
         expenseId: expenseMap['expenseId'],
-        category: category ?? Category(categoryId: expenseMap['categoryId'], name: '', totalExpenses: null, icon: '', color: null),
+        category: category,
         date: DateTime.parse(expenseMap['date']),
         amount: expenseMap['amount'],
       );
     });
-  }
-
-  // Check if any expenses exist in the database (for debugging)
-  Future<bool> hasExpenses() async {
-    final db = await instance.database;
-    final count = Sqflite.firstIntValue(await db.rawQuery('SELECT COUNT(*) FROM expenses'));
-    return count != null && count > 0;
   }
 }
