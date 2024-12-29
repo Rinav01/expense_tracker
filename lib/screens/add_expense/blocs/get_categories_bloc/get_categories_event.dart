@@ -7,4 +7,4 @@ sealed class GetCategoriesEvent extends Equatable {
   List<Object> get props => [];
 }
 
-class GetCategories extends GetCategoriesEvent {}
+class GetCategories extends GetCategoriesEvent {}//

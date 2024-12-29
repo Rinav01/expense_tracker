@@ -5,7 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_colorpicker/flutter_colorpicker.dart';
 import 'package:uuid/uuid.dart';
-
+//
 Future getCategoryCreation(BuildContext context) {
   List<String> myCategoriesIcons = ['entertainment', 'food', 'home', 'pet', 'shopping', 'tech', 'travel'];
 

@@ -1,6 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:expense_repository/src/entities/entities.dart';
-
+//
 import '../models/models.dart';
 
 class ExpenseEntity {

@@ -19,3 +19,4 @@ final class GetCategoriesSuccess extends GetCategoriesState {
   @override
   List<Object> get props => [categories];
 }
+//

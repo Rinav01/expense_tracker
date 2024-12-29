@@ -14,4 +14,4 @@ class CreateCategory extends CreateCategoryEvent {
 
   @override
   List<Object> get props => [category];
-}
+}//

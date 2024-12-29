@@ -20,3 +20,4 @@ class GetCategoriesBloc extends Bloc<GetCategoriesEvent, GetCategoriesState> {
     });
   }
 }
+//

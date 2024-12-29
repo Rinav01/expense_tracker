@@ -6,7 +6,7 @@ sealed class GetExpensesState extends Equatable {
   @override
   List<Object> get props => [];
 }
-
+//
 final class GetExpensesInitial extends GetExpensesState {}
 
 final class GetExpensesFailure extends GetExpensesState {}
