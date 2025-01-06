@@ -30,7 +30,7 @@ class _LoginPageState extends State<LoginPage> {
         Navigator.pushReplacement(
           context,
           MaterialPageRoute(
-            builder: (context) => HomeScreen(),  // Navigate directly to HomeScreen
+            builder: (context) => const HomeScreenWrapper(),  // Navigate directly to HomeScreen
           ),
         );
       }

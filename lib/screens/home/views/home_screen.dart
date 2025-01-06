@@ -22,29 +22,43 @@ class HomeScreen extends StatefulWidget {
 
 class _HomeScreenState extends State<HomeScreen> {
   int index = 0;
-  late Color selectedItem = Colors.blue;
-  Color unselectedItem = Colors.grey;
+  Color selectedItem = Colors.blue;
+  final Color unselectedItem = Colors.grey;
 
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<GetExpensesBloc, GetExpensesState>(
       builder: (context, state) {
-        if(state is GetExpensesSuccess) {
+        if (state is GetExpensesSuccess) {
           return Scaffold(
             bottomNavigationBar: ClipRRect(
-              borderRadius: const BorderRadius.vertical(top: Radius.circular(30)),
+              borderRadius:
+                  const BorderRadius.vertical(top: Radius.circular(30)),
               child: BottomNavigationBar(
-                  onTap: (value) {
+                onTap: (value) {
+                  if (index != value) {
                     setState(() {
                       index = value;
                     });
-                  },
-                  showSelectedLabels: false,
-                  showUnselectedLabels: false,
-                  elevation: 3,
-                  items: [BottomNavigationBarItem(icon: Icon(CupertinoIcons.home, color: index == 0 ? selectedItem : unselectedItem), label: 'Home'), BottomNavigationBarItem(icon: Icon(CupertinoIcons.graph_square_fill, color: index == 1 ? selectedItem : unselectedItem), label: 'Stats')]),
+                  }
+                },
+                showSelectedLabels: false,
+                showUnselectedLabels: false,
+                elevation: 3,
+                items: [
+                  BottomNavigationBarItem(
+                      icon: Icon(CupertinoIcons.home,
+                          color: index == 0 ? selectedItem : unselectedItem),
+                      label: 'Home'),
+                  BottomNavigationBarItem(
+                      icon: Icon(CupertinoIcons.graph_square_fill,
+                          color: index == 1 ? selectedItem : unselectedItem),
+                      label: 'Stats'),
+                ],
+              ),
             ),
-            floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
+            floatingActionButtonLocation:
+                FloatingActionButtonLocation.centerDocked,
             floatingActionButton: FloatingActionButton(
               onPressed: () async {
                 Expense? newExpense = await Navigator.push(
@@ -53,13 +67,17 @@ class _HomeScreenState extends State<HomeScreen> {
                     builder: (BuildContext context) => MultiBlocProvider(
                       providers: [
                         BlocProvider(
-                          create: (context) => CreateCategoryBloc(FirebaseExpenseRepo()),
+                          create: (context) =>
+                              CreateCategoryBloc(FirebaseExpenseRepo()),
                         ),
                         BlocProvider(
-                          create: (context) => GetCategoriesBloc(FirebaseExpenseRepo())..add(GetCategories()),
+                          create: (context) =>
+                              GetCategoriesBloc(FirebaseExpenseRepo())
+                                ..add(GetCategories()),
                         ),
                         BlocProvider(
-                          create: (context) => CreateExpenseBloc(FirebaseExpenseRepo()),
+                          create: (context) =>
+                              CreateExpenseBloc(FirebaseExpenseRepo()),
                         ),
                       ],
                       child: const AddExpense(),
@@ -67,7 +85,7 @@ class _HomeScreenState extends State<HomeScreen> {
                   ),
                 );
 
-                if(newExpense != null) {
+                if (newExpense != null) {
                   setState(() {
                     state.expenses.insert(0, newExpense);
                   });
@@ -78,29 +96,50 @@ class _HomeScreenState extends State<HomeScreen> {
                 width: 60,
                 height: 60,
                 decoration: BoxDecoration(
-                    shape: BoxShape.circle,
-                    gradient: LinearGradient(
-                      colors: [
-                        Theme.of(context).colorScheme.tertiary,
-                        Theme.of(context).colorScheme.secondary,
-                        Theme.of(context).colorScheme.primary,
-                      ],
-                      transform: const GradientRotation(pi / 4),
-                    )),
+                  shape: BoxShape.circle,
+                  gradient: LinearGradient(
+                    colors: [
+                      Theme.of(context).colorScheme.tertiary,
+                      Theme.of(context).colorScheme.secondary,
+                      Theme.of(context).colorScheme.primary,
+                    ],
+                    transform: const GradientRotation(pi / 4),
+                  ),
+                ),
                 child: const Icon(CupertinoIcons.add),
               ),
             ),
-            body: index == 0 
-              ? MainScreen(state.expenses) 
-              : const StatScreen());
-        } else {
+            body: index == 0 ? MainScreen(state.expenses) : const StatScreen(),
+          );
+        } else if (state is GetExpensesLoading) {
           return const Scaffold(
             body: Center(
               child: CircularProgressIndicator(),
             ),
           );
+        } else {
+          return const Scaffold(
+            body: Center(
+              child: Text('No data available.'),
+            ),
+          );
         }
-      }
+      },
+    );
+  }
+}
+
+class HomeScreenWrapper extends StatelessWidget {
+  const HomeScreenWrapper({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    final firebaseExpenseRepo = FirebaseExpenseRepo();
+
+    return BlocProvider<GetExpensesBloc>(
+      create: (context) =>
+          GetExpensesBloc(firebaseExpenseRepo)..add(GetExpenses()),
+      child: const HomeScreen(),
     );
   }
 }
