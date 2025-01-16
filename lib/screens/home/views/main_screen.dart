@@ -4,6 +4,24 @@ import 'package:expense_repository/expense_repository.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:expenses_tracker/screens/home/views/home_screen.dart';
+
+void main() {
+  runApp(MyApp());
+}
+
+class MyApp extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      title: 'Expenses Tracker',
+      theme: ThemeData(
+        primarySwatch: Colors.blue,
+      ),
+      home: const HomeScreenWrapper(), // Use HomeScreenWrapper here
+    );
+  }
+}
 
 class MainScreen extends StatelessWidget {
   final List<Expense> expenses;
@@ -63,7 +81,8 @@ class MainScreen extends StatelessWidget {
                   ],
                 ),
                 IconButton(
-                    onPressed: () {}, icon: const Icon(CupertinoIcons.settings)),
+                    onPressed: () {},
+                    icon: const Icon(CupertinoIcons.settings)),
               ],
             ),
             const SizedBox(height: 20),
@@ -109,7 +128,8 @@ class MainScreen extends StatelessWidget {
                     ),
                   ),
                   Padding(
-                    padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 20),
+                    padding: const EdgeInsets.symmetric(
+                        vertical: 12, horizontal: 20),
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
@@ -119,7 +139,8 @@ class MainScreen extends StatelessWidget {
                               width: 25,
                               height: 25,
                               decoration: const BoxDecoration(
-                                  color: Colors.white30, shape: BoxShape.circle),
+                                  color: Colors.white30,
+                                  shape: BoxShape.circle),
                               child: const Center(
                                 child: Icon(
                                   CupertinoIcons.arrow_down,
@@ -158,7 +179,8 @@ class MainScreen extends StatelessWidget {
                               width: 25,
                               height: 25,
                               decoration: const BoxDecoration(
-                                  color: Colors.white30, shape: BoxShape.circle),
+                                  color: Colors.white30,
+                                  shape: BoxShape.circle),
                               child: const Center(
                                 child: Icon(
                                   CupertinoIcons.arrow_down,
@@ -225,7 +247,15 @@ class MainScreen extends StatelessWidget {
             const SizedBox(height: 20),
             Expanded(
               child: expenses.isEmpty
-                  ? SizedBox()  // Empty space when no data is available
+                  ? Center(
+                      child: Text(
+                        "No transactions available",
+                        style: TextStyle(
+                          fontSize: 16,
+                          color: Theme.of(context).colorScheme.outline,
+                        ),
+                      ),
+                    )
                   : ListView.builder(
                       itemCount: expenses.length,
                       itemBuilder: (context, int i) {
@@ -238,7 +268,8 @@ class MainScreen extends StatelessWidget {
                             child: Padding(
                               padding: const EdgeInsets.all(16.0),
                               child: Row(
-                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
                                 children: [
                                   Row(
                                     children: [
@@ -249,7 +280,8 @@ class MainScreen extends StatelessWidget {
                                             width: 50,
                                             height: 50,
                                             decoration: BoxDecoration(
-                                                color: Color(expenses[i].category.color),
+                                                color: Color(
+                                                    expenses[i].category.color),
                                                 shape: BoxShape.circle),
                                           ),
                                           Image.asset(
@@ -264,7 +296,9 @@ class MainScreen extends StatelessWidget {
                                         expenses[i].category.name,
                                         style: TextStyle(
                                           fontSize: 14,
-                                          color: Theme.of(context).colorScheme.onSurface,
+                                          color: Theme.of(context)
+                                              .colorScheme
+                                              .onSurface,
                                           fontWeight: FontWeight.w500,
                                         ),
                                       ),
@@ -277,15 +311,20 @@ class MainScreen extends StatelessWidget {
                                         "\$${expenses[i].amount}.00",
                                         style: TextStyle(
                                           fontSize: 14,
-                                          color: Theme.of(context).colorScheme.onSurface,
+                                          color: Theme.of(context)
+                                              .colorScheme
+                                              .onSurface,
                                           fontWeight: FontWeight.w400,
                                         ),
                                       ),
                                       Text(
-                                        DateFormat('dd/MM/yyyy').format(expenses[i].date),
+                                        DateFormat('dd/MM/yyyy')
+                                            .format(expenses[i].date),
                                         style: TextStyle(
                                           fontSize: 14,
-                                          color: Theme.of(context).colorScheme.outline,
+                                          color: Theme.of(context)
+                                              .colorScheme
+                                              .outline,
                                           fontWeight: FontWeight.w400,
                                         ),
                                       ),
