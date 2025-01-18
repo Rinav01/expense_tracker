@@ -4,9 +4,9 @@ import 'package:expense_repository/expense_repository.dart';
 
 part 'get_expenses_event.dart';
 part 'get_expenses_state.dart';
-//
+
 class GetExpensesBloc extends Bloc<GetExpensesEvent, GetExpensesState> {
-  ExpenseRepository expenseRepository;
+  final ExpenseRepository expenseRepository;
 
   GetExpensesBloc(this.expenseRepository) : super(GetExpensesInitial()) {
     on<GetExpenses>((event, emit) async {
@@ -17,6 +17,10 @@ class GetExpensesBloc extends Bloc<GetExpensesEvent, GetExpensesState> {
       } catch (e) {
         emit(GetExpensesFailure());
       }
+    });
+
+    on<ClearExpenses>((event, emit) {
+      emit(GetExpensesInitial());
     });
   }
 }

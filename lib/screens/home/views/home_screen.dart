@@ -9,7 +9,7 @@ import 'package:expenses_tracker/screens/home/views/main_screen.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-//
+import 'package:firebase_auth/firebase_auth.dart';
 import '../../add_expense/blocs/create_expense_bloc/create_expense_bloc.dart';
 import '../../stats/stats.dart';
 
@@ -29,101 +29,91 @@ class _HomeScreenState extends State<HomeScreen> {
   Widget build(BuildContext context) {
     return BlocBuilder<GetExpensesBloc, GetExpensesState>(
       builder: (context, state) {
+        List<Expense> expenses = [];
         if (state is GetExpensesSuccess) {
-          return Scaffold(
-            bottomNavigationBar: ClipRRect(
-              borderRadius:
-                  const BorderRadius.vertical(top: Radius.circular(30)),
-              child: BottomNavigationBar(
-                onTap: (value) {
-                  if (index != value) {
-                    setState(() {
-                      index = value;
-                    });
-                  }
-                },
-                showSelectedLabels: false,
-                showUnselectedLabels: false,
-                elevation: 3,
-                items: [
-                  BottomNavigationBarItem(
-                      icon: Icon(CupertinoIcons.home,
-                          color: index == 0 ? selectedItem : unselectedItem),
-                      label: 'Home'),
-                  BottomNavigationBarItem(
-                      icon: Icon(CupertinoIcons.graph_square_fill,
-                          color: index == 1 ? selectedItem : unselectedItem),
-                      label: 'Stats'),
-                ],
-              ),
-            ),
-            floatingActionButtonLocation:
-                FloatingActionButtonLocation.centerDocked,
-            floatingActionButton: FloatingActionButton(
-              onPressed: () async {
-                Expense? newExpense = await Navigator.push(
-                  context,
-                  MaterialPageRoute<Expense>(
-                    builder: (BuildContext context) => MultiBlocProvider(
-                      providers: [
-                        BlocProvider(
-                          create: (context) =>
-                              CreateCategoryBloc(FirebaseExpenseRepo()),
-                        ),
-                        BlocProvider(
-                          create: (context) =>
-                              GetCategoriesBloc(FirebaseExpenseRepo())
-                                ..add(GetCategories()),
-                        ),
-                        BlocProvider(
-                          create: (context) =>
-                              CreateExpenseBloc(FirebaseExpenseRepo()),
-                        ),
-                      ],
-                      child: const AddExpense(),
-                    ),
-                  ),
-                );
+          expenses = state.expenses;
+        }
 
-                if (newExpense != null) {
+        return Scaffold(
+          bottomNavigationBar: ClipRRect(
+            borderRadius: const BorderRadius.vertical(top: Radius.circular(30)),
+            child: BottomNavigationBar(
+              onTap: (value) {
+                if (index != value) {
                   setState(() {
-                    state.expenses.insert(0, newExpense);
+                    index = value;
                   });
                 }
               },
-              shape: const CircleBorder(),
-              child: Container(
-                width: 60,
-                height: 60,
-                decoration: BoxDecoration(
-                  shape: BoxShape.circle,
-                  gradient: LinearGradient(
-                    colors: [
-                      Theme.of(context).colorScheme.tertiary,
-                      Theme.of(context).colorScheme.secondary,
-                      Theme.of(context).colorScheme.primary,
+              showSelectedLabels: false,
+              showUnselectedLabels: false,
+              elevation: 3,
+              items: [
+                BottomNavigationBarItem(
+                    icon: Icon(CupertinoIcons.home,
+                        color: index == 0 ? selectedItem : unselectedItem),
+                    label: 'Home'),
+                BottomNavigationBarItem(
+                    icon: Icon(CupertinoIcons.graph_square_fill,
+                        color: index == 1 ? selectedItem : unselectedItem),
+                    label: 'Stats'),
+              ],
+            ),
+          ),
+          floatingActionButtonLocation:
+              FloatingActionButtonLocation.centerDocked,
+          floatingActionButton: FloatingActionButton(
+            onPressed: () async {
+              Expense? newExpense = await Navigator.push(
+                context,
+                MaterialPageRoute<Expense>(
+                  builder: (BuildContext context) => MultiBlocProvider(
+                    providers: [
+                      BlocProvider(
+                        create: (context) =>
+                            CreateCategoryBloc(FirebaseExpenseRepo()),
+                      ),
+                      BlocProvider(
+                        create: (context) =>
+                            GetCategoriesBloc(FirebaseExpenseRepo())
+                              ..add(GetCategories()),
+                      ),
+                      BlocProvider(
+                        create: (context) =>
+                            CreateExpenseBloc(FirebaseExpenseRepo()),
+                      ),
                     ],
-                    transform: const GradientRotation(pi / 4),
+                    child: const AddExpense(),
                   ),
                 ),
-                child: const Icon(CupertinoIcons.add),
+              );
+
+              if (newExpense != null) {
+                setState(() {
+                  expenses.insert(0, newExpense);
+                });
+              }
+            },
+            shape: const CircleBorder(),
+            child: Container(
+              width: 60,
+              height: 60,
+              decoration: BoxDecoration(
+                shape: BoxShape.circle,
+                gradient: LinearGradient(
+                  colors: [
+                    Theme.of(context).colorScheme.tertiary,
+                    Theme.of(context).colorScheme.secondary,
+                    Theme.of(context).colorScheme.primary,
+                  ],
+                  transform: const GradientRotation(pi / 4),
+                ),
               ),
+              child: const Icon(CupertinoIcons.add),
             ),
-            body: index == 0 ? MainScreen(state.expenses) : const StatScreen(),
-          );
-        } else if (state is GetExpensesLoading) {
-          return const Scaffold(
-            body: Center(
-              child: CircularProgressIndicator(),
-            ),
-          );
-        } else {
-          return const Scaffold(
-            body: Center(
-              child: Text('No data available.'),
-            ),
-          );
-        }
+          ),
+          body: index == 0 ? MainScreen(expenses) : const StatScreen(),
+        );
       },
     );
   }
@@ -136,10 +126,23 @@ class HomeScreenWrapper extends StatelessWidget {
   Widget build(BuildContext context) {
     final firebaseExpenseRepo = FirebaseExpenseRepo();
 
-    return BlocProvider<GetExpensesBloc>(
-      create: (context) =>
-          GetExpensesBloc(firebaseExpenseRepo)..add(GetExpenses()),
-      child: const HomeScreen(),
+    return StreamBuilder<User?>(
+      stream: FirebaseAuth.instance.authStateChanges(),
+      builder: (context, snapshot) {
+        if (snapshot.connectionState == ConnectionState.waiting) {
+          return const Center(child: CircularProgressIndicator());
+        } else if (snapshot.hasError) {
+          return const Center(child: Text('Something went wrong'));
+        } else if (!snapshot.hasData) {
+          return const Center(child: Text('User not logged in'));
+        } else {
+          return BlocProvider<GetExpensesBloc>(
+            create: (context) =>
+                GetExpensesBloc(firebaseExpenseRepo)..add(GetExpenses()),
+            child: const HomeScreen(),
+          );
+        }
+      },
     );
   }
 }

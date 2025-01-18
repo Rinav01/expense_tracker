@@ -1,10 +1,15 @@
 import 'dart:math';
-
+import 'package:expenses_tracker/authentication/login_page.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:expense_repository/expense_repository.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:expenses_tracker/screens/home/views/home_screen.dart';
+ // Import your login screen
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:expenses_tracker/screens/home/blocs/get_expenses_bloc/get_expenses_bloc.dart';
+
 
 void main() {
   runApp(MyApp());
@@ -80,9 +85,7 @@ class MainScreen extends StatelessWidget {
                     ),
                   ],
                 ),
-                IconButton(
-                    onPressed: () {},
-                    icon: const Icon(CupertinoIcons.settings)),
+                SignOutButton(), // Use the SignOutButton here
               ],
             ),
             const SizedBox(height: 20),
@@ -341,6 +344,23 @@ class MainScreen extends StatelessWidget {
           ],
         ),
       ),
+    );
+  }
+}
+
+class SignOutButton extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return IconButton(
+      icon: Icon(Icons.logout),
+      onPressed: () async {
+        await FirebaseAuth.instance.signOut();
+        context.read<GetExpensesBloc>().add(ClearExpenses());
+        Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(builder: (context) => LoginPage()),
+        );
+      },
     );
   }
 }
