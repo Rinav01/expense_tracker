@@ -29,7 +29,7 @@ class _SignupPageState extends State<SignupPage> {
       Future.delayed(const Duration(seconds: 1), () {
         Navigator.pushReplacement(
           context,
-          MaterialPageRoute(builder: (context) => const HomeScreen()),
+          MaterialPageRoute(builder: (context) => const HomeScreenWrapper()),
         );
       });
     } on FirebaseAuthException catch (e) {
